@@ -377,7 +377,7 @@ namespace babylon_wasm.Client.Pages
                 car.position.z = 8m;
 
                 var animCar = new BABYLON.Animation("carAnimation", "position.z", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
-
+                /*
                 var carKeys = new List<IAnimationKeyCachedEntity>();
 
                 carKeys.Add(new IAnimationKeyCachedEntity()
@@ -397,7 +397,7 @@ namespace babylon_wasm.Client.Pages
                 car.animations = new Animation[1] { animCar };
                 car.createAnimationRange("carAnimation", 0, 200);
                 car.beginAnimation("carAnimation", true, 1);
-
+                */
                 //scene.beginAnimation(car, 0, 200, true);
 
                 //wheel animation
