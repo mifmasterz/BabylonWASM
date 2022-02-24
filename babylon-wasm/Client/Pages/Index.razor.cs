@@ -27,7 +27,7 @@ namespace babylon_wasm.Client.Pages
         {
             if (firstRender)
             {
-                //CreateSceneAsync();
+
             }
         }
 
@@ -52,34 +52,33 @@ namespace babylon_wasm.Client.Pages
 
             var canvas = Canvas.GetElementById("game-window");
             var engine = new Engine(canvas, true);
-            // We extend the standard Scene with the DebugLayer getter in the DebugLayerScene
+            // extend layer scene untuk debug
             _scene = new DebugLayerScene(engine);
 
             #region follow cam
-            // This creates and initially positions a follow camera 	
+            // bikin kamera yang ngikutin dan set posisi awal kamera 	
             camera = new BABYLON.FollowCamera("FollowCam", new BABYLON.Vector3(-6, 0, 0), _scene);
 
-            //The goal distance of camera from target
+            //jarak kamera ke target 
             camera.radius = 1;
 
-            // The goal height of camera above local oriin (centre) of target
+            // tinggi kamera dari target
             camera.heightOffset = 8;
 
-            // The goal rotation of camera around local origin (centre) of target in x y plane
+            // rotasi kamera dari tengah target di x y plane
             camera.rotationOffset = 0;
 
-            //Acceleration of camera in moving from current to goal position
+            //akselerasi kamera dari posisi saat ini ke target
             camera.cameraAcceleration = 0.005m;
 
-            //The speed at which acceleration is halted 
+            //maksimum speed kamera 
             camera.maxCameraSpeed = 10m;
 
-            //camera.target is set after the target's creation
-
-            // This attaches the camera to the canvas
+            //tempel kamera ke canvas
             camera.attachControl(true);
             #endregion
 
+            //untuk kamera yang berotasi
             #region arc rotate cam
             //var camera = new BABYLON.ArcRotateCamera("camera", (decimal)(-System.Math.PI / 2), (decimal)(System.Math.PI / 2.5), 15, new BABYLON.Vector3(0, 0, 0), _scene);
             //camera.upperBetaLimit = (decimal)(System.Math.PI / 2.2);
@@ -96,7 +95,7 @@ namespace babylon_wasm.Client.Pages
             await AnimateCharacterAsync(_scene);
 
 
-
+            //kalau pake vr device biasa pake freecamera
             #region vr cam
             /*
             var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -6), _scene);
@@ -105,8 +104,6 @@ namespace babylon_wasm.Client.Pages
             var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 1, 0), _scene);
             */
             #endregion
-            //  var sphere = BABYLON.Mesh.CreateSphere("sphere1", 16, 2, scene);
-            //  sphere.position.y = 1;
 
             // Default Environment
             /*
@@ -193,8 +190,6 @@ namespace babylon_wasm.Client.Pages
             });
             panel.addControl(slider);
 
-
-
             BABYLON.SceneLoader.ImportMesh("", "https://assets.babylonjs.com/meshes/", "lamp.babylon", scene,
                 new ActionCallback<AbstractMesh[], IParticleSystem[], Skeleton[], AnimationGroup[], TransformNode[], Geometry[], Light[]>(
                     (meshes, arg2, skeletons, arg4, arg5, arg6, arg7) =>
@@ -236,7 +231,7 @@ namespace babylon_wasm.Client.Pages
         {
             ParticleSystem particleSystem;
             AbstractMesh fountain;
-            //Switch fountain on and off
+            //nyalain air mancur
             bool switched = false;
             void pointerDown(AbstractMesh mesh)
             {
@@ -245,56 +240,56 @@ namespace babylon_wasm.Client.Pages
                     switched = !switched;
                     if (switched)
                     {
-                        // Start the particle system
+                        // mulai particle system
                         particleSystem.start();
                     }
                     else
                     {
-                        // Stop the particle system
+                        // Stop particle system
                         particleSystem.stop();
                     }
                 }
 
             }
-            // Create a particle system
+            // bikin particle system
             particleSystem = new BABYLON.ParticleSystem("particles", 5000m, scene);
 
             //Texture of each particle
             particleSystem.particleTexture = new BABYLON.Texture(scene, "textures/flare.png");
 
-            // Where the particles come from
+            // titik keluarnya partikel
             var emiter1 = new AbstractMesh("emiter", scene);
             emiter1.position = new BABYLON.Vector3(-4m, 0.8m, -6m); // emitted from the top of the fountain
             particleSystem.emitter = emiter1;
             particleSystem.minEmitBox = new BABYLON.Vector3(-0.01m, 0, -0.01m); // Starting all from
             particleSystem.maxEmitBox = new BABYLON.Vector3(0.01m, 0, 0.01m); // To...
 
-            // Colors of all particles
+            // warna particles
             particleSystem.color1 = new BABYLON.Color4(0.7m, 0.8m, 1.0m, 1.0m);
             particleSystem.color2 = new BABYLON.Color4(0.2m, 0.5m, 1.0m, 1.0m);
 
-            // Size of each particle (random between...
+            // ukuran partiker dari sampai
             particleSystem.minSize = 0.01m;
             particleSystem.maxSize = 0.05m;
 
-            // Life time of each particle (random between...
+            // life dari setiap partikel (random antara...
             particleSystem.minLifeTime = 0.3m;
             particleSystem.maxLifeTime = 1.5m;
 
-            // Emission rate
+            // rata-rata keluar partikel
             particleSystem.emitRate = 1500;
 
             // Blend mode : BLENDMODE_ONEONE, or BLENDMODE_STANDARD
             particleSystem.blendMode = BABYLON.ParticleSystem.BLENDMODE_ONEONE;
 
-            // Set the gravity of all particles
+            // set gravitasi partikel
             particleSystem.gravity = new BABYLON.Vector3(0, -9.81m, 0);
 
-            // Direction of each particle after it has been emitted
+            // arah partikel setelah keluar
             particleSystem.direction1 = new BABYLON.Vector3(-1, 8, 1);
             particleSystem.direction2 = new BABYLON.Vector3(1, 8, -1);
 
-            // Power and speed
+            // Power dan speed
             particleSystem.minEmitPower = 0.2m;
             particleSystem.maxEmitPower = 0.6m;
             particleSystem.updateSpeed = 0.01m;
@@ -309,7 +304,7 @@ namespace babylon_wasm.Client.Pages
                new BABYLON.Vector3(0.05m, 0.8m, 0),
                new BABYLON.Vector3(0.15m, 0.9m, 0)
             };
-            //Create lathed fountain
+            //bikin pancuran
             fountain = BABYLON.MeshBuilder.CreateLathe("fountain", new { shape = fountainProfile, sideOrientation = BABYLON.Mesh.DOUBLESIDE }, scene);
             fountain.position.x = -4;
             fountain.position.z = -6;
@@ -337,20 +332,20 @@ namespace babylon_wasm.Client.Pages
 
             var spriteManagerTrees = new BABYLON.SpriteManager("treesManager", "textures/palm.png", 2000, new { width = 512, height = 1024 }, scene);
             Random rnd = new Random();
-            //We create trees at random positions
+            //bikin pohon di lokasi random
             for (var i = 0; i < 500; i++)
             {
                 var tree = new BABYLON.Sprite("tree", spriteManagerTrees);
-                tree.position.x = rnd.Next() * (-30);
-                tree.position.z = rnd.Next() * 20 + 8;
+                tree.position.x =(decimal)( rnd.NextDouble() * (-30));
+                tree.position.z = (decimal)(rnd.NextDouble() * 20 + 8);
                 tree.position.y = 0.5m;
             }
 
             for (var i = 0; i < 500; i++)
             {
                 var tree = new BABYLON.Sprite("tree", spriteManagerTrees);
-                tree.position.x = rnd.Next() * (25) + 7;
-                tree.position.z = rnd.Next() * -35 + 8;
+                tree.position.x = (decimal)(rnd.NextDouble() * (25) + 7);
+                tree.position.z = (decimal)(rnd.NextDouble() * -35 + 8);
                 tree.position.y = 0.5m;
             }
 
@@ -365,68 +360,68 @@ namespace babylon_wasm.Client.Pages
             skybox.material = skyboxMaterial;
             //village
             BABYLON.SceneLoader.ImportMesh("", "https://assets.babylonjs.com/meshes/", "valleyvillage.glb", scene);
-
+            //mobil
             BABYLON.SceneLoader.ImportMesh("", "https://assets.babylonjs.com/meshes/", "car.glb", scene,
                 new ActionCallback<AbstractMesh[], IParticleSystem[], Skeleton[], AnimationGroup[], TransformNode[], Geometry[], Light[]>(
                     (meshes, arg2, skeletons, arg4, arg5, arg6, arg7) =>
-            {
-                var car = scene.getMeshByName("car");
-                car.rotation = new BABYLON.Vector3((decimal)(System.Math.PI / 2), 0, (decimal)(-System.Math.PI / 2));
-                car.position.y = 0.16m;
-                car.position.x = -3m;
-                car.position.z = 8m;
+                    {
+                        var car = scene.getMeshByName("car");
+                        car.rotation = new BABYLON.Vector3((decimal)(System.Math.PI / 2), 0, (decimal)(-System.Math.PI / 2));
+                        car.position.y = 0.16m;
+                        car.position.x = -3m;
+                        car.position.z = 8m;
 
-                var animCar = new BABYLON.Animation("carAnimation", "position.z", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
-                /*
-                var carKeys = new List<IAnimationKeyCachedEntity>();
+                        var animCar = new BABYLON.Animation("carAnimation", "position.z", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+                        /*
+                        var carKeys = new List<IAnimationKeyCachedEntity>();
 
-                carKeys.Add(new IAnimationKeyCachedEntity()
-                {
-                    frame = 0,
-                    value = 10
-                });
-                carKeys.Add(new IAnimationKeyCachedEntity()
-                {
-                    frame = 200,
-                    value = -15
-                });
+                        carKeys.Add(new IAnimationKeyCachedEntity()
+                        {
+                            frame = 0,
+                            value = 10
+                        });
+                        carKeys.Add(new IAnimationKeyCachedEntity()
+                        {
+                            frame = 200,
+                            value = -15
+                        });
 
-                animCar.setKeys(carKeys.ToArray());
+                        animCar.setKeys(carKeys.ToArray());
+                        */
+                        //car.animations = [];
+                        car.animations = new Animation[1] { animCar };
+                        //car.createAnimationRange("carAnimation", 0, 200);
+                        //car.beginAnimation("carAnimation", true, 1);
 
-                //car.animations = [];
-                car.animations = new Animation[1] { animCar };
-                car.createAnimationRange("carAnimation", 0, 200);
-                car.beginAnimation("carAnimation", true, 1);
-                */
-                //scene.beginAnimation(car, 0, 200, true);
+                        //scene.beginAnimation(car, 0, 200, true);
 
-                //wheel animation
-                var wheelRB = scene.getMeshByName("wheelRB");
-                var wheelRF = scene.getMeshByName("wheelRF");
-                var wheelLB = scene.getMeshByName("wheelLB");
-                var wheelLF = scene.getMeshByName("wheelLF");
+                        //wheel animation
+                        var wheelRB = scene.getMeshByName("wheelRB");
+                        var wheelRF = scene.getMeshByName("wheelRF");
+                        var wheelLB = scene.getMeshByName("wheelLB");
+                        var wheelLF = scene.getMeshByName("wheelLF");
 
-                wheelRB.createAnimationRange("x1", 0, 30);
-                wheelRB.beginAnimation("x1", true, 1);
-                wheelRF.createAnimationRange("x2", 0, 30);
-                wheelRF.beginAnimation("x2", true, 1);
-                wheelLB.createAnimationRange("x3", 0, 30);
-                wheelLB.beginAnimation("x3", true, 1);
-                wheelLF.createAnimationRange("x4", 0, 30);
-                wheelLF.beginAnimation("x4", true, 1);
+                        wheelRB.createAnimationRange("x1", 0, 30);
+                        wheelRB.beginAnimation("x1", true, 1);
+                        wheelRF.createAnimationRange("x2", 0, 30);
+                        wheelRF.beginAnimation("x2", true, 1);
+                        wheelLB.createAnimationRange("x3", 0, 30);
+                        wheelLB.beginAnimation("x3", true, 1);
+                        wheelLF.createAnimationRange("x4", 0, 30);
+                        wheelLF.beginAnimation("x4", true, 1);
 
-                //scene.beginAnimation(wheelRF, 0, 30, true);
-                //scene.beginAnimation(wheelLB, 0, 30, true);
-                //scene.beginAnimation(wheelLF, 0, 30, true);
+                        //scene.beginAnimation(wheelRF, 0, 30, true);
+                        //scene.beginAnimation(wheelLB, 0, 30, true);
+                        //scene.beginAnimation(wheelLF, 0, 30, true);
 
-                return Task.CompletedTask;
-            }));
+                        return Task.CompletedTask;
+                    }));
 
         }
         #endregion
 
         #region character
-
+        
         class walk
         {
             public decimal turn { get; set; }
@@ -440,6 +435,7 @@ namespace babylon_wasm.Client.Pages
         }
         async Task AnimateCharacterAsync(Scene scene)
         {
+            
             var track = new List<walk>();
             track.Add(new walk(86m, 7m));
             track.Add(new walk(-85m, 14.8m));
@@ -540,7 +536,7 @@ namespace babylon_wasm.Client.Pages
                 boxMat.diffuseTexture = new BABYLON.Texture(scene, "https://assets.babylonjs.com/environments/cubehouse.png");
             }
 
-            //options parameter to set different images on each side
+            //parameter untuk atur gambar di setiap sisi
             var faceUV = new Vector4[4];
             if (width == 2)
             {
@@ -556,7 +552,7 @@ namespace babylon_wasm.Client.Pages
                 faceUV[2] = new BABYLON.Vector4(0.25m, 0, 0.5m, 1.0m); //right side
                 faceUV[3] = new BABYLON.Vector4(0.75m, 0, 1.0m, 1.0m); //left side
             }
-            // top 4 and bottom 5 not seen so not set
+            // top 4 dan bottom 5 tidak terlihat jadi ga di atur
 
 
             var box = BABYLON.MeshBuilder.CreateBox("box", new { width = width, faceUV = faceUV, wrap = true }, scene);
@@ -624,7 +620,7 @@ namespace babylon_wasm.Client.Pages
             places.Add(new[] { 2m, (decimal)(-System.Math.PI / 3), 5.25m, 2m });
             places.Add(new[] { 1m, (decimal)(-System.Math.PI / 3), 6m, 4m });
 
-            //Create instances from the first two that were built 
+            //bikin rumah berdasarkan dua rumah yang awal dibuat 
             var houses = new InstancedMesh[places.Count];
             for (var i = 0; i < places.Count; i++)
             {
